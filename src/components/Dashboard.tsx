@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import noxData from "../data/nox.json";
 import LineChart from "./LineChart";
 
+export interface NoxData {
+  "Emission source categories": string;
+  "Zeitreihen-ID": string | null;
+  [year: string]: string | number | null;
+}
+
 // Get all categories from the data
-const categories = noxData.map((row: any) => row["Emission source categories"]);
+const categories = noxData.map((row: NoxData) => row["Emission source categories"]);
 
 // Default selected: only "Energy Industries"
 const defaultCategory = "1. Energy Industries";
-const initialSelected = categories.filter((cat) => cat === defaultCategory);
 
 const Dashboard: React.FC = () => {
-  const [selected, setSelected] = useState<string[]>(initialSelected);
+  const [selected, setSelected] = useState<string[]>([defaultCategory]);
 
   const toggleCategory = (cat: string) => {
     setSelected((prev) =>
